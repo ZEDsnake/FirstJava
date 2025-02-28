@@ -11,14 +11,14 @@ public class UserMessageEntity {
     private long id;
 
     @Column(name = "message")
-    private String mgs;
+    private String msg;
 
     public UserMessageEntity() {
     }
 
     public UserMessageEntity(long id, String mgs) {
         this.id = id;
-        this.mgs = mgs;
+        this.msg = mgs;
     }
 
     public long getId() {
@@ -29,11 +29,11 @@ public class UserMessageEntity {
         this.id = id;
     }
 
-    public String getMgs() {
-        return mgs;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMgs(String mgs) {
-        this.mgs = mgs;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

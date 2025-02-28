@@ -1,11 +1,14 @@
 package com.example.firstjava.service;
 
+import com.example.firstjava.dto.UserMessageDto;
+import com.example.firstjava.dto.UserMessageRequestDto;
 import com.example.firstjava.entity.UserMessageEntity;
 import com.example.firstjava.exception.MsgNotFoundException;
 import com.example.firstjava.repository.HelloRepository;
 import com.example.firstjava.repository.UserMessageRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -35,16 +38,35 @@ public class HelloService {
             return "Текст долден быть не пустой";
         }
         UserMessageEntity userMessageEntity = new UserMessageEntity();
-        userMessageEntity.setMgs(text);
+        userMessageEntity.setMsg(text);
 
         userMessageRepository.save(userMessageEntity);
         return "Сообщение сохранено: " + text;
+    }
+
+    public UserMessageRequestDto saveMsg(UserMessageDto userMessageDto) {
+        if (userMessageDto == null || userMessageDto.getMsg().isBlank()) {
+            throw new RuntimeException("Текст долден быть не пустой");
+        }
+
+        String text = userMessageDto.getMsg();
+
+        UserMessageEntity userMessageEntity = new UserMessageEntity();
+        userMessageEntity.setMsg(text);
+
+        userMessageRepository.save(userMessageEntity);
+
+        UserMessageRequestDto response = new UserMessageRequestDto();
+        response.setMsg("Сообщение сохранено: " + text);
+        response.setLocalDateTime(LocalDateTime.now());
+
+        return response;
     }
 
     public String getMsg(long id) {
         UserMessageEntity findEntity = userMessageRepository.getMsgFromId(id)
                 .orElseThrow(() -> new MsgNotFoundException("Нет сообщения с id " + id));
 
-        return "Сообщение с id " + id + " найдено: " + findEntity.getMgs();
+        return "Сообщение с id " + id + " найдено: " + findEntity.getMsg();
     }
 }
